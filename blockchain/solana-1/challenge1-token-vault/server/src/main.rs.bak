@@ -1,0 +1,152 @@
+use sol_ctf_framework::ChallengeBuilder;
+use solana_program::system_program;
+use solana_sdk::{
+    account::Account,
+    pubkey::Pubkey,
+    signature::{Keypair, Signer},
+};
+use std::{
+    error::Error,
+    fs,
+    io::Write,
+    net::{TcpListener, TcpStream},
+};
+use token_vault::initialize;
+
+const STARTING_BALANCE: u64 = 10_000_000_000; // 10 SOL
+const WIN_THRESHOLD: u64 = 5_000_000_000; // Steal 5 SOL
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn Error>> {
+    println!("╔════════════════════════════════════════════════╗");
+    println!("║   H7CTF 2025 - Token Vault Challenge Server   ║");
+    println!("╚════════════════════════════════════════════════╝");
+    println!();
+    println!("🚀 Starting challenge server...");
+    
+    let listener = TcpListener::bind("0.0.0.0:5000")?;
+    println!("📡 Listening on 0.0.0.0:5000");
+    println!("⏳ Waiting for connections...\n");
+    
+    loop {
+        let (stream, addr) = listener.accept()?;
+        println!("✅ New connection from: {}", addr);
+        
+        tokio::spawn(async move {
+            if let Err(e) = handle_connection(stream).await {
+                eprintln!("❌ Handler error: {}", e);
+            }
+        });
+    }
+}
+
+async fn handle_connection(mut socket: TcpStream) -> Result<(), Box<dyn Error>> {
+    writeln!(socket, "╔════════════════════════════════════════════════╗")?;
+    writeln!(socket, "║         H7CTF 2025 - Token Vault               ║")?;
+    writeln!(socket, "╚════════════════════════════════════════════════╝\n")?;
+    
+    writeln!(socket, "⏳ Initializing your challenge instance...\n")?;
+
+    let mut builder = ChallengeBuilder::try_from(socket.try_clone()?)?;
+
+    // Create user keypair
+    let user = Keypair::new();
+    let user_pubkey = user.pubkey();
+
+    // Load the vulnerable vault program
+    let program_id = Pubkey::new_unique();
+    let program_pubkey = builder
+        .add_program("./token_vault.so", Some(program_id))
+        .expect("Failed to add vault program");
+
+    // Setup user account with initial balance
+    builder.builder.add_account(
+        user_pubkey,
+        Account::new(STARTING_BALANCE, 0, &system_program::ID),
+    );
+
+    // Calculate vault PDA
+    let (vault_pda, _bump) = Pubkey::find_program_address(
+        &[b"vault", user_pubkey.as_ref()], 
+        &program_pubkey
+    );
+
+    // Display ALL credentials and info BEFORE asking for exploit
+    writeln!(socket, "✅ Challenge initialized!\n")?;
+    writeln!(socket, "╔════════════════════════════════════════════════╗")?;
+    writeln!(socket, "║            YOUR CREDENTIALS                    ║")?;
+    writeln!(socket, "╚════════════════════════════════════════════════╝\n")?;
+    
+    writeln!(socket, "🔑 User Account:")?;
+    writeln!(socket, "   Public Key:  {}", user_pubkey)?;
+    writeln!(socket, "   Private Key: {:?}", user.to_bytes())?;
+    writeln!(socket, "   Balance:     {} SOL\n", STARTING_BALANCE / 1_000_000_000)?;
+    
+    writeln!(socket, "� Challenge Program:")?;
+    writeln!(socket, "   Program ID:  {}", program_pubkey)?;
+    writeln!(socket, "   Vault PDA:   {}\n", vault_pda)?;
+    
+    writeln!(socket, "� Objective:")?;
+    writeln!(socket, "   Steal {} SOL or more from the vault!\n", WIN_THRESHOLD / 1_000_000_000)?;
+    
+    writeln!(socket, "💡 Hints:")?;
+    writeln!(socket, "   - Vault tracks balance manually (not using SPL Token)")?;
+    writeln!(socket, "   - Look for integer underflow in withdraw()")?;
+    writeln!(socket, "   - What happens if you withdraw more than deposited?")?;
+    writeln!(socket, "   - Can balance go below zero?\n")?;
+    
+    writeln!(socket, "═══════════════════════════════════════════════\n")?;
+    
+    // NOW ask for the exploit program (BEFORE building!)
+    let solve_pubkey = match builder.input_program() {
+        Ok(pubkey) => pubkey,
+        Err(e) => {
+            writeln!(socket, "Error: cannot add solve program → {e}")?;
+            return Ok(());
+        }
+    };
+    
+    // Build the challenge
+    let mut challenge = builder.build().await;
+
+    // Initialize vault
+    challenge
+        .run_ixs_full(
+            &[initialize(program_pubkey, user_pubkey)],
+            &[&user],
+            &user_pubkey,
+        )
+        .await?;
+
+    // Run solve program
+    writeln!(socket, "\n🔄 Running your exploit...\n")?;
+    let ixs = challenge.read_instruction(solve_pubkey).unwrap();
+    challenge.run_ixs_full(&[ixs], &[&user], &user_pubkey).await?;
+
+    // Check if solved
+    let user_balance = challenge
+        .ctx
+        .banks_client
+        .get_account(user_pubkey)
+        .await?
+        .unwrap()
+        .lamports;
+    
+    let stolen = user_balance.saturating_sub(STARTING_BALANCE);
+    
+    writeln!(socket, "📊 Results:")?;
+    writeln!(socket, "   Your balance: {} SOL", user_balance / 1_000_000_000)?;
+    writeln!(socket, "   Stolen:       {} SOL", stolen / 1_000_000_000)?;
+
+    if stolen >= WIN_THRESHOLD {
+        let flag = fs::read_to_string("/flag.txt")
+            .or_else(|_| fs::read_to_string("flag.txt"))
+            .unwrap_or_else(|_| "H7CTF{test_flag_token_vault}".to_string());
+        writeln!(socket, "\n🎉 Congratulations! You exploited the integer underflow!")?;
+        writeln!(socket, "🚩 Flag: {}", flag)?;
+    } else {
+        writeln!(socket, "\n❌ Not enough SOL stolen. Keep trying!")?;
+    }
+
+    Ok(())
+}
