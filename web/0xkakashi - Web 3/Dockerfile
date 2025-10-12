@@ -1,32 +1,36 @@
-# ⚡ 1. Use JDK 8 (includes Nashorn JS engine needed for the Text4Shell exploit)
-FROM openjdk:8-jdk-alpine
+FROM maven:3.6.3-jdk-8 AS builder
+WORKDIR /build
 
-# 🧰 2. Install required tools
-RUN apk update && apk add --no-cache bash curl tar procps
+COPY pom.xml mvnw ./
+COPY .mvn .mvn
+RUN mvn -B -DskipTests dependency:go-offline
 
-# 🧩 3. Install Maven (3.6.3 is fine)
-ARG MAVEN_VERSION=3.6.3
-ARG USER_HOME_DIR="/root"
-ARG BASE_URL=https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries
-RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
-  && curl -fsSL -o /tmp/maven.tar.gz ${BASE_URL}/apache-maven-${MAVEN_VERSION}-bin.tar.gz \
-  && tar -xzf /tmp/maven.tar.gz -C /usr/share/maven --strip-components=1 \
-  && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn \
-  && rm -f /tmp/maven.tar.gz
-ENV MAVEN_HOME /usr/share/maven
-ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
+COPY . .
+RUN mvn -B -DskipTests package
 
-# 📂 4. Set working directory
+FROM openjdk:8-jre-slim
+LABEL maintainer="abu@h7tex.com"
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates curl gnupg2 gosu wget uuid-runtime \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN groupadd -r ctf && useradd -r -g ctf -m -d /home/ctf ctf \
+ && mkdir -p /flag /app \
+ && chown root:ctf /flag /app
+
 WORKDIR /app
 
-# 📦 5. Copy your Maven project files into the container
-COPY . /app
+COPY --from=builder /build/target/*.jar /app/app.jar
 
-# 🧱 6. Build the app
-RUN mvn clean package -DskipTests
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 
-# 🌐 7. Expose the default Spring Boot port
+ENV JAVA_OPTS="-Xms128m -Xmx256m -XX:MetaspaceSize=64m -XX:MaxMetaspaceSize=96m -XX:+UseSerialGC -Djava.security.egd=file:/dev/./urandom"
+
 EXPOSE 8080
 
-# 🚀 8. Run the built JAR
-CMD ["java", "-jar", "target/kakashi-jutsu-2.1.1.RELEASE.jar"]
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s \
+  CMD wget -q --spider http://127.0.0.1:8080/ || exit 1
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
