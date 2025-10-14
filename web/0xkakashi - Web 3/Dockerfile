@@ -41,4 +41,4 @@ RUN mvn clean install -DskipTests
 EXPOSE 8080
 
 # 🚀 8. Run the built JAR
-CMD ["java", "-jar", "target/kakashi-jutsu-2.1.1.RELEASE.jar"]
+CMD ["java", "-jar", "target/text4shell-poc-0.0.1-SNAPSHOT.jar"]
