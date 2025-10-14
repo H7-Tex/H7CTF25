@@ -1,22 +1,39 @@
-FROM node:18-alpine
-
-# Install pnpm, uuid-runtime (for uuidgen), and perl
-RUN apk add --no-cache util-linux perl && \
-    npm install -g pnpm
-
+# Multi-stage build for optimized standalone deployment
+FROM node:18-alpine AS deps
 WORKDIR /app
-
-# Copy everything to /app
-COPY . .
-
-# Install dependencies (without frozen lockfile since lockfile is outdated)
+RUN npm install -g pnpm
+COPY package.json pnpm-lock.yaml* ./
 RUN pnpm install
 
-# Copy and set up entrypoint script (before build so we can use it to build)
+FROM node:18-alpine AS builder
+WORKDIR /app
+RUN npm install -g pnpm
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+# Build with standalone output
+RUN pnpm run build
+
+FROM node:18-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV production
+
+# Install only runtime dependencies
+RUN apk add --no-cache util-linux && \
+    addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
+
+# Copy standalone output
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+
+# Copy entrypoint script
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
-EXPOSE 8080
+USER nextjs
 
-# Use entrypoint script to generate unique flag, build, and start on each container start
+EXPOSE 8080
+ENV PORT 8080
+
 ENTRYPOINT ["/docker-entrypoint.sh"]
