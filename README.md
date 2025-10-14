@@ -6,8 +6,9 @@ Abu
 MrGhost
 PsychoSherlock
 Owatron
+exposedapi
 0xkakashi
-NukuneZ
+nukoneZ
 NTiger
 Cook1e
 N1sh

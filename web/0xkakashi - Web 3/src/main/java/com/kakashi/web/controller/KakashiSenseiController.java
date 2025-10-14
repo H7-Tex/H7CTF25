@@ -1,6 +1,7 @@
 package com.kakashi.sharingan_jutsu.controller;
 
 import org.apache.commons.text.StringSubstitutor;
+import org.apache.commons.text.lookup.StringLookupFactory;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -54,7 +55,7 @@ public class KakashiSenseiController {
     @RequestMapping(value = "/copyninja", method = RequestMethod.GET)
     @ResponseBody
     public String copyninja(@RequestParam(name = "chakra", defaultValue = "") String kakashi_poc) {
-        StringSubstitutor kakashi_interpolator = StringSubstitutor.createInterpolator();
+        StringSubstitutor kakashi_interpolator = new StringSubstitutor(StringLookupFactory.INSTANCE.interpolatorStringLookup());
         try {
             String vuln = kakashi_interpolator.replace(kakashi_poc);
         } catch (Exception chakra_exception) {
