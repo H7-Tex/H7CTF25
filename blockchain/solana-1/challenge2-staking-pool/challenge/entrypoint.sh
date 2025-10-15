@@ -11,5 +11,5 @@ chmod 400 /home/ctfuser/flag.txt
 
 cd /home/ctfuser
 
-# Run server as ctfuser
+# Run server as ctfuser (simplified, works better)
 exec su ctfuser -c "./staking-pool-server"

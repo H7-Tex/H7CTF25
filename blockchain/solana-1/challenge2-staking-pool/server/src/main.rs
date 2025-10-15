@@ -43,11 +43,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
 }
 
 async fn handle_connection(mut socket: TcpStream) -> Result<(), Box<dyn Error>> {
-    writeln!(socket, "╔════════════════════════════════════════════════╗")?;
-    writeln!(socket, "║        H7CTF 2025 - Staking Pool              ║")?;
-    writeln!(socket, "╚════════════════════════════════════════════════╝\n")?;
-    
-    writeln!(socket, "Initializing challenge instance...\n")?;
+    writeln!(socket, "Pool")?;
+    writeln!(socket, "Initializing challenge instance...")?;
     
     let mut builder = ChallengeBuilder::try_from(socket.try_clone().unwrap()).unwrap();
 
@@ -84,9 +81,7 @@ async fn handle_connection(mut socket: TcpStream) -> Result<(), Box<dyn Error>> 
     
     builder.builder.add_account(admin_pool_pda, admin_account);
     
-    writeln!(socket, "Instance ready.\n")?;
-    
-    writeln!(socket, "User Account:")?;
+    writeln!(socket, "Player Account:")?;
     writeln!(socket, "  Address: {}", user.pubkey())?;
     writeln!(socket, "  Balance: {} SOL", STARTING_BALANCE / 1_000_000_000)?;
     
@@ -118,7 +113,7 @@ async fn handle_connection(mut socket: TcpStream) -> Result<(), Box<dyn Error>> 
     
     let mut challenge = builder.build().await;
 
-    writeln!(socket, "\nRunning exploit...\n")?;
+    writeln!(socket, "Running exploit...")?;
     
     // Read the instruction from the client
     let solve_ix = challenge.read_instruction(solve_pubkey)?;
@@ -133,16 +128,15 @@ async fn handle_connection(mut socket: TcpStream) -> Result<(), Box<dyn Error>> 
         .unwrap()
         .lamports;
     
-    writeln!(socket, "Results:")?;
-    writeln!(socket, "  Your balance: {} SOL", user_balance / 1_000_000_000)?;
+    writeln!(socket, "Your balance: {} SOL", user_balance / 1_000_000_000)?;
 
     if user_balance >= WIN_THRESHOLD {
         let flag = fs::read_to_string("/flag.txt")
             .or_else(|_| fs::read_to_string("flag.txt"))
-            .unwrap_or_else(|_| "H7CTF{test_flag_staking_pool}".to_string());
-        writeln!(socket, "\nSuccess! Flag: {}", flag)?;
+            .unwrap_or_else(|_| "H7CTF{test_flag}".to_string());
+        writeln!(socket, "Flag: {}", flag)?;
     } else {
-        writeln!(socket, "\nFailed. Keep trying.")?;
+        writeln!(socket, "Failed. Need {} SOL total.", WIN_THRESHOLD / 1_000_000_000)?;
     }
 
     Ok(())

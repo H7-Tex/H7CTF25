@@ -42,14 +42,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
 }
 
 async fn handle_connection(mut socket: TcpStream) -> Result<(), Box<dyn Error>> {
-    writeln!(socket, "╔════════════════════════════════════════════════╗")?;
-    writeln!(socket, "║        H7CTF 2025 - Vault Heist                ║")?;
-    writeln!(socket, "║                                                ║")?;
-    writeln!(socket, "║  A mysterious vault holds 50 SOL...            ║")?;
-    writeln!(socket, "║  Can you find a way to steal from it?         ║")?;
-    writeln!(socket, "╚════════════════════════════════════════════════╝\n")?;
-    
-    writeln!(socket, "Initializing challenge instance...\n")?;
+    writeln!(socket, "Plus Minus")?;
+    writeln!(socket, "Initializing challenge instance...")?;
     
     let mut builder = ChallengeBuilder::try_from(socket.try_clone().unwrap()).unwrap();
 
@@ -88,9 +82,6 @@ async fn handle_connection(mut socket: TcpStream) -> Result<(), Box<dyn Error>> 
     
     builder.builder.add_account(vault_pda, vault_account);
     
-    writeln!(socket, "Instance ready.\n")?;
-    
-    writeln!(socket, "═══════════════════════════════════════════════")?;
     writeln!(socket, "Player Account:")?;
     writeln!(socket, "  Address: {}", user.pubkey())?;
     writeln!(socket, "  Balance: {} SOL", STARTING_BALANCE / 1_000_000_000)?;
@@ -108,10 +99,9 @@ async fn handle_connection(mut socket: TcpStream) -> Result<(), Box<dyn Error>> 
     
     writeln!(socket, "Vault Status:")?;
     writeln!(socket, "  Balance: {} SOL", VAULT_BALANCE / 1_000_000_000)?;
-    writeln!(socket, "  Admin: {}\n", admin.pubkey())?;
-    writeln!(socket, "═══════════════════════════════════════════════\n")?;
+    writeln!(socket, "  Admin: {}", admin.pubkey())?;
     
-    writeln!(socket, "Objective: Steal at least 40 SOL from the vault to get the flag!\n")?;
+    writeln!(socket, "Objective: Withdraw {} SOL or more", WIN_THRESHOLD / 1_000_000_000)?;
     
     let solve_program_id = match builder.input_program() {
         Ok(pubkey) => pubkey,
@@ -121,7 +111,7 @@ async fn handle_connection(mut socket: TcpStream) -> Result<(), Box<dyn Error>> 
         }
     };
     
-    writeln!(socket, "Running your exploit...\n")?;
+    writeln!(socket, "Running exploit...")?;
     
     let mut challenge = builder.build().await;
     
@@ -144,20 +134,15 @@ async fn handle_connection(mut socket: TcpStream) -> Result<(), Box<dyn Error>> 
         .await?
         .unwrap()
         .lamports;
-    writeln!(socket, "Your balance after: {} SOL\n", balance_after / 1_000_000_000)?;
+    writeln!(socket, "Your balance: {} SOL", balance_after / 1_000_000_000)?;
     
     if balance_after >= WIN_THRESHOLD {
-        writeln!(socket, "╔════════════════════════════════════════════════╗")?;
-        writeln!(socket, "║              🎉 HEIST SUCCESSFUL! 🎉            ║")?;
-        writeln!(socket, "╚════════════════════════════════════════════════╝\n")?;
-        
         let flag = fs::read_to_string("/home/ctfuser/flag.txt")
             .or_else(|_| fs::read_to_string("flag.txt"))
-            .unwrap_or_else(|_| "H7CTF{test_flag_missing_signer_check}".to_string());
+            .unwrap_or_else(|_| "H7CTF{test_flag}".to_string());
         writeln!(socket, "Flag: {}", flag.trim())?;
     } else {
-        writeln!(socket, "❌ Not enough SOL stolen. You need at least 40 SOL total.")?;
-        writeln!(socket, "   Hint: Look for functions that check identity but not signatures...\n")?;
+        writeln!(socket, "Failed. Need {} SOL total.", WIN_THRESHOLD / 1_000_000_000)?;
     }
 
     Ok(())
