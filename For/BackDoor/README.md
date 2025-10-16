@@ -7,4 +7,4 @@ While casually browsing the internet, I suddenly received a strange authenticati
 >**Your Mission**:
 Conduct a full forensic investigation to identify what happened, trace the attacker’s actions, and answer all the provided questions based on your findings.
 
-Link: https://drive.google.com/file/d/1IpSe4P_wqLXkHl7NpPInwZvxirvMOldD/view?usp=drive_link
+Link: https://drive.google.com/uc?export=download&id=1IpSe4P_wqLXkHl7NpPInwZvxirvMOldD
