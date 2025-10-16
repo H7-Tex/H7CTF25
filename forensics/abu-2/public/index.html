@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KGF: Part 1 - Kings of Gold Fields</title>
+    <title>KGF 1.0</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -27,8 +27,8 @@
             <!-- Question 1 -->
             <div class="question">
                 <label for="q1">
-                    <span class="qnum">Question 1 (100 pts):</span>
-                    The malware downloads a malicious script from a remote command-and-control server. What is the IP address of the C2 server?
+                    <span class="qnum">Question 1:</span>
+                    What is the IP address of the primary C2 server?
                 </label>
                 <input type="text" id="q1" name="q1" placeholder="Enter IP address" data-length="12" required>
                 <span class="char-hint"></span>
@@ -37,18 +37,18 @@
             <!-- Question 2 -->
             <div class="question">
                 <label for="q2">
-                    <span class="qnum">Question 2 (150 pts):</span>
-                    What is the complete URL of the malicious script that the cron job downloads and executes?
+                    <span class="qnum">Question 2:</span>
+                    What is the complete URL that the cron job downloads?
                 </label>
-                <input type="text" id="q2" name="q2" placeholder="Enter full URL" data-length="26" required>
+                <input type="text" id="q2" name="q2" placeholder="Enter full URL" data-length="24" required>
                 <span class="char-hint"></span>
             </div>
 
             <!-- Question 3 -->
             <div class="question">
                 <label for="q3">
-                    <span class="qnum">Question 3 (250 pts):</span>
-                    The malware has backup C2 servers hardcoded in the binary. How many additional IP addresses (excluding 80.64.16.241) are embedded in the kinsing controller? Provide the count only.
+                    <span class="qnum">Question 3:</span>
+                    How many backup C2 IP addresses are embedded in the kinsing binary (excluding the primary)?
                 </label>
                 <input type="text" id="q3" name="q3" placeholder="Enter number" data-length="1" required>
                 <span class="char-hint"></span>
@@ -57,8 +57,8 @@
             <!-- Question 4 -->
             <div class="question">
                 <label for="q4">
-                    <span class="qnum">Question 4 (300 pts):</span>
-                    When was the malicious cron job installed? Provide the timestamp in the format: <code>YYYY-MM-DD HH:MM:SS</code> (Use the timezone shown in the stat output)
+                    <span class="qnum">Question 4:</span>
+                    When was the malicious cron job installed? Format: YYYY-MM-DD HH:MM:SS
                 </label>
                 <input type="text" id="q4" name="q4" placeholder="YYYY-MM-DD HH:MM:SS" data-length="19" required>
                 <span class="char-hint"></span>
@@ -67,8 +67,8 @@
             <!-- Question 5 -->
             <div class="question">
                 <label for="q5">
-                    <span class="qnum">Question 5 (150 pts):</span>
-                    What cryptocurrency does the kdevtmpfsi miner mine? Provide the ticker symbol (e.g., Bitcoin = BTC, Ethereum = ETH, Solana = SOL).
+                    <span class="qnum">Question 5:</span>
+                    What cryptocurrency does the miner target? Provide the ticker symbol.
                 </label>
                 <input type="text" id="q5" name="q5" placeholder="Enter ticker symbol" data-length="3" required>
                 <span class="char-hint"></span>
@@ -77,8 +77,8 @@
             <!-- Question 6 -->
             <div class="question">
                 <label for="q6">
-                    <span class="qnum">Question 6 (400 pts):</span>
-                    Calculate the time difference in DAYS between when the kinsing controller was first deployed and when the kdevtmpfsi miner was last updated. Use the "Modify" timestamps from <code>stat</code> output.
+                    <span class="qnum">Question 6:</span>
+                    Calculate the time difference in days between the kinsing controller's first deployment and the kdevtmpfsi miner's last update.
                 </label>
                 <input type="text" id="q6" name="q6" placeholder="Enter number of days" data-length="3" required>
                 <span class="char-hint"></span>
@@ -87,8 +87,8 @@
             <!-- Question 7 -->
             <div class="question">
                 <label for="q7">
-                    <span class="qnum">Question 7 (250 pts):</span>
-                    The malware disguises its HTTP requests as a legitimate browser. What Chrome browser version number does it impersonate in its User-Agent string?
+                    <span class="qnum">Question 7:</span>
+                    What Chrome browser version does the malware impersonate in its User-Agent string?
                 </label>
                 <input type="text" id="q7" name="q7" placeholder="Enter version number" data-length="12" required>
                 <span class="char-hint"></span>
@@ -97,8 +97,8 @@
             <!-- Question 8 -->
             <div class="question">
                 <label for="q8">
-                    <span class="qnum">Question 8 (300 pts):</span>
-                    The malware downloads a port scanning tool with a misleading name to avoid detection. What filename does it use for the downloaded scanner?
+                    <span class="qnum">Question 8:</span>
+                    What filename does the malware use for the downloaded port scanner?
                 </label>
                 <input type="text" id="q8" name="q8" placeholder="Enter filename" data-length="8" required>
                 <span class="char-hint"></span>
