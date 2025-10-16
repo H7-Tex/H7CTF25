@@ -101,25 +101,28 @@ EOF
     echo "[✓] Network configuration complete"
   SHELL
   
-  # 3. Setup vulnerable sudo version
-  config.vm.provision "shell", name: "sudo-setup", path: "provisioning/setup-sudo.sh"
-  
-  # 4. Create users and place flags
+  # 3. Create users and place flags
   config.vm.provision "shell", name: "user-setup", path: "provisioning/setup-users.sh"
+  
+  # 4. Configure system access
+  config.vm.provision "shell", name: "sudo-setup", path: "provisioning/setup-sudo.sh"
   
   # 5. Install Docker with exposed API
   config.vm.provision "shell", name: "docker-setup", path: "provisioning/setup-docker.sh"
   
-  # 6. Setup web portal (SSRF entry point)
+  # 6. Setup Docker privilege escalation environment
+  config.vm.provision "shell", name: "docker-privesc-setup", path: "provisioning/setup-docker-privesc.sh"
+  
+  # 7. Setup web portal (SSRF entry point)
   config.vm.provision "shell", name: "web-setup", path: "provisioning/setup-web.sh"
   
-  # 7. Setup API Gateway (internal service on port 8090)
+  # 8. Setup API Gateway (internal service on port 8090)
   config.vm.provision "shell", name: "api-gateway-setup", path: "provisioning/setup-api-gateway.sh"
   
-  # 8. Setup KeePass database with SSH credentials (LAST - needs manual setup)
+  # 9. Setup KeePass database with SSH credentials (LAST - needs manual setup)
   config.vm.provision "shell", name: "keepass-setup", path: "provisioning/setup-keepass-db.sh"
   
-  # 7. Final hardening and cleanup
+  # 10. Final hardening and cleanup
   config.vm.provision "shell", name: "final-setup", inline: <<-SHELL
     echo "[*] Final configuration..."
     

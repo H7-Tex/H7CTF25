@@ -38,7 +38,7 @@ chmod 600 /home/abu/flag2.txt
 
 # Flag 3: Root privilege (in /root)
 cat > /root/flag3.txt << 'EOF'
-H7CTF{r00t_4cc3ss_4ch13v3d_cve_2025_32463}
+H7CTF{d0ck3r_esc4p3_v1a_n4m3sp4c3_sh4r1ng_and_nsent3r}
 EOF
 
 chmod 600 /root/flag3.txt
