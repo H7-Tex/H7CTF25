@@ -4,13 +4,18 @@ FROM python:3.10-slim
 # ===== system dependencies =====
 RUN apt-get update && apt-get install -y --no-install-recommends \
     socat \
+    uuid-runtime \
     && rm -rf /var/lib/apt/lists/*
 
 # =====  challenge directory =====
 WORKDIR /app
 
 # =====  challenge files =====
-COPY . /app
+COPY source.py /app/
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+
+# Make entrypoint executable
+RUN chmod +x /docker-entrypoint.sh
 
 # ===== Python dependencies =====
 
@@ -23,5 +28,5 @@ USER ctf
 # ===== Expose challenge port =====
 EXPOSE 10000
 
-# ===== Run the service =====
-CMD ["python3", "server.py"]
+# ===== Run via entrypoint for dynamic flag =====
+ENTRYPOINT ["/docker-entrypoint.sh"]

@@ -6,7 +6,8 @@ from hashlib import sha256
 
 from Crypto.Cipher import AES
 
-from secret import flag
+# Get flag from environment variable (dynamic UUID flag)
+flag = os.environ.get("FLAG", "H7CTF{test_flag}").encode()
 
 # Kakashi-themed banner (only naming/strings changed)
 KAKASHI_BANNER = br"""
@@ -17,10 +18,7 @@ KAKASHI_BANNER = br"""
 | $$__  $$   /$$/  | $$         | $$   | $$__/   
 | $$  | $$  /$$/   | $$    $$   | $$   | $$      
 | $$  | $$ /$$/    |  $$$$$$/   | $$   | $$      
-|__/  |__/|__/      \______/    |__/   |__/      
-                                                 
-                                                 
-                                                  0xkakashi  
+|__/  |__/|__/      \______/    |__/   |__/
 """
 
 JUTSU_MENU = br"""
