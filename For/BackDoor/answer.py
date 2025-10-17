@@ -2,6 +2,7 @@
 
 import re
 import sys
+import os
 
 MAX_ATTEMPTS = 3
 
@@ -146,7 +147,12 @@ def main():
 
     # If all correct
     print("\nAll questions correct. Congratulations!")
-    print("Flag:", "H7CTF{D1sc0rd_1s_p0w3rfull_t0_s1mul@t3_C2}")
+    
+    # Get dynamic flag from environment variable
+    import os
+    flag = os.environ.get("FLAG", "H7CTF{test_flag}")
+    print("Flag:", flag)
+    
     # Optionally print the full answers summary:
     print("\nSummary of answers:")
     for k in sorted(CORRECT.keys(), key=int):
