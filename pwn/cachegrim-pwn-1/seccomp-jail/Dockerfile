@@ -11,9 +11,9 @@ RUN apt-get update && apt-get install -y \
 # Create challenge directory
 WORKDIR /app
 
-# Copy source and compile with optimizations for faster execution
+# Copy source and compile
 COPY test.c /app/chal.c
-RUN gcc -o /app/chal /app/chal.c -no-pie -fno-stack-protector -lseccomp -O2 -w
+RUN gcc -o /app/chal /app/chal.c -no-pie -fno-stack-protector -lseccomp -O0 -w
 
 # Copy entrypoint script
 COPY docker-entrypoint.sh /docker-entrypoint.sh
@@ -24,10 +24,6 @@ RUN useradd -m ctfuser
 
 # Expose port
 EXPOSE 1337
-
-# Set resource limits for better performance
-# Increase CPU shares and remove memory limits that might cause swapping
-ENV DOCKER_CPU_SHARES=1024
 
 # Run via entrypoint for dynamic flag
 ENTRYPOINT ["/docker-entrypoint.sh"]
