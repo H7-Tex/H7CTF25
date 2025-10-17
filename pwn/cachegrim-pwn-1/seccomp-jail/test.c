@@ -65,7 +65,7 @@ void vuln() {
     printf("The flag file object is stored at: %p\n", &fp);
     printf("Enter input: ");
     read(0, buffer, 256);
-//     setup_seccomp();s
+    setup_seccomp();  // Re-enable seccomp restrictions
 }
 
 int main() {

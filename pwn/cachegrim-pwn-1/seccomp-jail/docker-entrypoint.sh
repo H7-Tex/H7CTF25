@@ -10,4 +10,4 @@ echo "H7CTF{r0p_j41l_${UUID}}" > /flag
 echo "Starting seccomp-jail challenge on port 1337..."
 
 # Run with socat for TCP access
-exec socat -v TCP-LISTEN:1337,reuseaddr,fork EXEC:"/app/chal",su=ctfuser
+exec socat TCP-LISTEN:1337,reuseaddr,fork EXEC:"/app/chal",su=ctfuser

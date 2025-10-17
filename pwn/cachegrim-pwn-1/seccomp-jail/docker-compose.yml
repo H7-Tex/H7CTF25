@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  seccomp-jail:
+    build: .
+    ports:
+      - "1337:1337"
+    # Security settings
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    read_only: false
+    restart: unless-stopped
