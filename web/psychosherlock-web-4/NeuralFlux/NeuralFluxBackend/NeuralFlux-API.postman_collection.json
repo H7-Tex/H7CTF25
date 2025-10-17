@@ -1,0 +1,565 @@
+{
+  "info": {
+    "_postman_id": "neuralflux-api-collection",
+    "name": "NeuralFlux Admin Panel API",
+    "description": "Complete API collection for NeuralFlux AI Admin Panel Backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Public Endpoints",
+      "item": [
+        {
+          "name": "Home",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-NEURALEND-KEY",
+                "value": "{{X_NEURALEND_KEY}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/",
+              "host": ["{{BASE_URL}}"],
+              "path": [""]
+            },
+            "description": "Get API status and version information"
+          },
+          "response": []
+        },
+        {
+          "name": "API Contract",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-NEURALEND-KEY",
+                "value": "{{X_NEURALEND_KEY}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/contract",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "contract"]
+            },
+            "description": "Get complete API documentation and endpoint details"
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints that don't require authentication"
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Admin Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Automatically save the token to environment variable",
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set(\"AUTH_TOKEN\", jsonData.token);",
+                  "    console.log(\"Token saved to environment:\", jsonData.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-NEURALEND-KEY",
+                "value": "{{X_NEURALEND_KEY}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"{{ADMIN_USERNAME}}\",\n    \"password\": \"{{ADMIN_PASSWORD}}\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/admin/login",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "admin", "login"]
+            },
+            "description": "Login with admin credentials to get JWT token. Token is automatically saved to environment variable."
+          },
+          "response": []
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{AUTH_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-NEURALEND-KEY",
+                "value": "{{X_NEURALEND_KEY}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"current_password\": \"{{ADMIN_PASSWORD}}\",\n    \"new_password\": \"newpassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/admin/change-password",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "admin", "change-password"]
+            },
+            "description": "Change admin password (requires authentication)"
+          },
+          "response": []
+        }
+      ],
+      "description": "Authentication related endpoints"
+    },
+    {
+      "name": "Systems",
+      "item": [
+        {
+          "name": "Get All Systems",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{AUTH_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-NEURALEND-KEY",
+                "value": "{{X_NEURALEND_KEY}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/systems",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "systems"]
+            },
+            "description": "Get all system status information"
+          },
+          "response": []
+        },
+        {
+          "name": "Get System by ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{AUTH_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-NEURALEND-KEY",
+                "value": "{{X_NEURALEND_KEY}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/systems/1",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "systems", "1"]
+            },
+            "description": "Get specific system details by ID"
+          },
+          "response": []
+        }
+      ],
+      "description": "System status and monitoring endpoints"
+    },
+    {
+      "name": "Employees",
+      "item": [
+        {
+          "name": "Get All Employees",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{AUTH_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-NEURALEND-KEY",
+                "value": "{{X_NEURALEND_KEY}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/employees",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "employees"]
+            },
+            "description": "Get all employee information"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Employee by ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{AUTH_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-NEURALEND-KEY",
+                "value": "{{X_NEURALEND_KEY}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/employees/1",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "employees", "1"]
+            },
+            "description": "Get specific employee details by ID"
+          },
+          "response": []
+        }
+      ],
+      "description": "Employee management endpoints"
+    },
+    {
+      "name": "Messages",
+      "item": [
+        {
+          "name": "Get All Messages",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{AUTH_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-NEURALEND-KEY",
+                "value": "{{X_NEURALEND_KEY}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/messages",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "messages"]
+            },
+            "description": "Get all messages"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Message by ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{AUTH_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-NEURALEND-KEY",
+                "value": "{{X_NEURALEND_KEY}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/messages/1",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "messages", "1"]
+            },
+            "description": "Get specific message by ID"
+          },
+          "response": []
+        }
+      ],
+      "description": "Message management endpoints"
+    },
+    {
+      "name": "ML Models",
+      "item": [
+        {
+          "name": "Get All Model Deployments",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{AUTH_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-NEURALEND-KEY",
+                "value": "{{X_NEURALEND_KEY}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/models",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "models"]
+            },
+            "description": "Get all ML model deployment information"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Training Jobs",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{AUTH_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-NEURALEND-KEY",
+                "value": "{{X_NEURALEND_KEY}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/training-jobs",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "training-jobs"]
+            },
+            "description": "Get all ML training jobs"
+          },
+          "response": []
+        }
+      ],
+      "description": "Machine Learning model and training endpoints"
+    },
+    {
+      "name": "Analytics",
+      "item": [
+        {
+          "name": "Get API Usage Statistics",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{AUTH_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-NEURALEND-KEY",
+                "value": "{{X_NEURALEND_KEY}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/usage",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "usage"]
+            },
+            "description": "Get API usage statistics"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Dashboard Summary",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{AUTH_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-NEURALEND-KEY",
+                "value": "{{X_NEURALEND_KEY}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/dashboard",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "dashboard"]
+            },
+            "description": "Get complete dashboard summary with all statistics"
+          },
+          "response": []
+        }
+      ],
+      "description": "Analytics and usage statistics endpoints"
+    },
+    {
+      "name": "Images",
+      "item": [
+        {
+          "name": "Upload Image",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Automatically save the image_id to environment variable",
+                  "if (pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set(\"IMAGE_ID\", jsonData.image_id);",
+                  "    console.log(\"Image ID saved to environment:\", jsonData.image_id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{AUTH_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-NEURALEND-KEY",
+                "value": "{{X_NEURALEND_KEY}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/upload-image",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "upload-image"]
+            },
+            "description": "Upload an image file. Select an image file to upload. The image ID will be automatically saved to environment variable."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Image",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-NEURALEND-KEY",
+                "value": "{{X_NEURALEND_KEY}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/images/{{IMAGE_ID}}",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "images", "{{IMAGE_ID}}"]
+            },
+            "description": "Retrieve an uploaded image by its ID. Uses the IMAGE_ID from environment or you can replace it with a specific ID."
+          },
+          "response": []
+        }
+      ],
+      "description": "Image upload and retrieval endpoints"
+    }
+  ],
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": "http://localhost:5000",
+      "type": "string"
+    }
+  ]
+}

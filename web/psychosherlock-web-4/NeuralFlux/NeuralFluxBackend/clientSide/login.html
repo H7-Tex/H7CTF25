@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login - Neural Flux Corp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="scanline"></div>
+    <div class="grid-bg"></div>
+
+    <button id="themeToggle" class="theme-toggle">
+      <svg
+        id="sunIcon"
+        class="w-5 h-5 hidden"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+        />
+      </svg>
+      <svg
+        id="moonIcon"
+        class="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+        />
+      </svg>
+    </button>
+
+    <nav class="main-nav">
+      <div class="nav-container">
+        <div class="logo">
+          <div class="logo-icon">
+            <div class="neural-net">
+              <div class="node"></div>
+              <div class="node"></div>
+              <div class="node"></div>
+              <div class="connection"></div>
+              <div class="connection"></div>
+              <div class="connection"></div>
+            </div>
+          </div>
+          <span class="logo-text">NEURAL FLUX CORP</span>
+        </div>
+        <div class="nav-menu" id="navMenu">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="solutions.html" class="nav-link">Solutions</a>
+          <a href="products.html" class="nav-link">Products</a>
+          <a href="research.html" class="nav-link">Research</a>
+          <a href="about.html" class="nav-link">About</a>
+          <a href="contact.html" class="nav-link">Contact</a>
+          <a href="login.html" class="nav-link admin-link active">
+            <svg
+              class="w-4 h-4 inline-block mr-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+              />
+            </svg>
+            Admin
+          </a>
+        </div>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <div class="login-container">
+      <div class="login-card">
+        <div class="login-header">
+          <div class="login-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+              />
+            </svg>
+          </div>
+          <h1 class="login-title">Admin Portal</h1>
+          <p class="login-subtitle">Access Neural Flux administrative panel</p>
+        </div>
+
+        <form id="loginForm" class="login-form">
+          <div class="form-group">
+            <label for="username" class="form-label">Username</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              class="form-input"
+              placeholder="Enter your username"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="password" class="form-label">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="form-input"
+              placeholder="Enter your password"
+              required
+            />
+          </div>
+
+          <div id="loginError" class="login-error"></div>
+          <div id="loginSuccess" class="login-success"></div>
+
+          <button type="submit" class="login-button" id="loginButton">
+            Sign In
+          </button>
+        </form>
+
+        <div class="back-link">
+          <a href="index.html">← Back to Home</a>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="login.js"></script>
+  </body>
+</html>

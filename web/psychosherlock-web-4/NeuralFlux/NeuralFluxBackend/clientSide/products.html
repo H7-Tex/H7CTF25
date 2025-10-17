@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Products - Neural Flux Corp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="scanline"></div>
+    <div class="grid-bg"></div>
+
+    <button id="themeToggle" class="theme-toggle">
+      <svg
+        id="sunIcon"
+        class="w-5 h-5 hidden"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+        />
+      </svg>
+      <svg
+        id="moonIcon"
+        class="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+        />
+      </svg>
+    </button>
+
+    <nav class="main-nav">
+      <div class="nav-container">
+        <div class="logo">
+          <div class="logo-icon">
+            <div class="neural-net">
+              <div class="node"></div>
+              <div class="node"></div>
+              <div class="node"></div>
+              <div class="connection"></div>
+              <div class="connection"></div>
+              <div class="connection"></div>
+            </div>
+          </div>
+          <span class="logo-text">NEURAL FLUX CORP</span>
+        </div>
+        <div class="nav-menu" id="navMenu">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="solutions.html" class="nav-link">Solutions</a>
+          <a href="products.html" class="nav-link active">Products</a>
+          <a href="research.html" class="nav-link">Research</a>
+          <a href="about.html" class="nav-link">About</a>
+          <a href="contact.html" class="nav-link">Contact</a>
+          <a href="login.html" class="nav-link admin-link">
+            <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
+            Admin
+          </a>
+        </div>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="page-hero">
+        <h1 class="page-title">Neural Flux Corp Products</h1>
+        <p class="page-subtitle">
+          Powerful AI tools designed for developers and enterprises
+        </p>
+      </section>
+
+      <section class="products-showcase">
+        <div class="product-featured">
+          <div class="product-badge-featured">New Release</div>
+          <div class="product-featured-content">
+            <h2 class="product-featured-title">Neural Flux Platform</h2>
+            <p class="product-featured-subtitle">
+              The Complete AI Development Environment
+            </p>
+            <p class="product-featured-description">
+              Build, train, and deploy AI models at scale with our flagship
+              platform. Includes pre-trained models, auto-scaling
+              infrastructure, and comprehensive monitoring tools.
+            </p>
+            <div class="product-features-highlight">
+              <div class="feature-highlight">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span>Visual model builder</span>
+              </div>
+              <div class="feature-highlight">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span>One-click deployment</span>
+              </div>
+              <div class="feature-highlight">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span>Real-time collaboration</span>
+              </div>
+              <div class="feature-highlight">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span>Enterprise security</span>
+              </div>
+            </div>
+            <div class="product-cta">
+              <button class="btn btn-primary btn-large">
+                Start Free Trial
+              </button>
+              <button class="btn btn-secondary btn-large">View Demo</button>
+            </div>
+          </div>
+          <div class="product-featured-visual">
+            <div class="product-screen">
+              <div class="screen-header">
+                <div class="screen-dots">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+              <div class="screen-content">
+                <div class="code-line">
+                  <span class="code-keyword">import</span> neuralfluxcorp
+                  <span class="code-keyword">as</span> nfc
+                </div>
+                <div class="code-line">
+                  <span class="code-keyword">model</span> = nfc.create_model()
+                </div>
+                <div class="code-line">model.train(data)</div>
+                <div class="code-line">
+                  model.deploy(<span class="code-string">"production"</span>)
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="products-grid">
+          <div class="product-card">
+            <div class="product-header">
+              <div class="product-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
+                  />
+                </svg>
+              </div>
+              <span class="product-badge">API</span>
+            </div>
+            <h3 class="product-title">Neural API</h3>
+            <p class="product-description">
+              RESTful API with pre-trained models for instant AI capabilities.
+              Perfect for developers who want to integrate AI without
+              infrastructure complexity.
+            </p>
+            <ul class="product-features-list">
+              <li>100+ pre-trained models</li>
+              <li>99.99% uptime SLA</li>
+              <li>Global edge network</li>
+              <li>Pay-as-you-go pricing</li>
+            </ul>
+            <div class="product-pricing">
+              <span class="price">$0.001</span>
+              <span class="price-unit">per request</span>
+            </div>
+            <button class="btn btn-primary">Get API Key</button>
+          </div>
+
+          <div class="product-card">
+            <div class="product-header">
+              <div class="product-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                  <line x1="8" y1="21" x2="16" y2="21" />
+                  <line x1="12" y1="17" x2="12" y2="21" />
+                </svg>
+              </div>
+              <span class="product-badge">Enterprise</span>
+            </div>
+            <h3 class="product-title">Neural Studio</h3>
+            <p class="product-description">
+              Desktop application for data scientists and ML engineers. Train
+              custom models locally with GPU acceleration and cloud sync.
+            </p>
+            <ul class="product-features-list">
+              <li>Local GPU training</li>
+              <li>Cloud model registry</li>
+              <li>Team collaboration</li>
+              <li>Version control</li>
+            </ul>
+            <div class="product-pricing">
+              <span class="price">$49</span>
+              <span class="price-unit">per user/month</span>
+            </div>
+            <button class="btn btn-primary">Download Now</button>
+          </div>
+
+          <div class="product-card">
+            <div class="product-header">
+              <div class="product-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"
+                  />
+                </svg>
+              </div>
+              <span class="product-badge">SaaS</span>
+            </div>
+            <h3 class="product-title">Neural Chat</h3>
+            <p class="product-description">
+              Conversational AI platform with customizable chatbots. Deploy
+              intelligent assistants for customer support, sales, and internal
+              tools.
+            </p>
+            <ul class="product-features-list">
+              <li>Multi-channel support</li>
+              <li>Custom training data</li>
+              <li>Analytics dashboard</li>
+              <li>50+ integrations</li>
+            </ul>
+            <div class="product-pricing">
+              <span class="price">$99</span>
+              <span class="price-unit">per month</span>
+            </div>
+            <button class="btn btn-primary">Start Trial</button>
+          </div>
+
+          <div class="product-card">
+            <div class="product-header">
+              <div class="product-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <rect x="3" y="3" width="7" height="7" />
+                  <rect x="14" y="3" width="7" height="7" />
+                  <rect x="14" y="14" width="7" height="7" />
+                  <rect x="3" y="14" width="7" height="7" />
+                </svg>
+              </div>
+              <span class="product-badge">Vision</span>
+            </div>
+            <h3 class="product-title">Neural Vision</h3>
+            <p class="product-description">
+              Computer vision toolkit for image and video analysis. Object
+              detection, facial recognition, and custom visual AI models.
+            </p>
+            <ul class="product-features-list">
+              <li>Real-time processing</li>
+              <li>Custom model training</li>
+              <li>Edge device support</li>
+              <li>Privacy-first design</li>
+            </ul>
+            <div class="product-pricing">
+              <span class="price">$199</span>
+              <span class="price-unit">per month</span>
+            </div>
+            <button class="btn btn-primary">Learn More</button>
+          </div>
+
+          <div class="product-card">
+            <div class="product-header">
+              <div class="product-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                </svg>
+              </div>
+              <span class="product-badge">Analytics</span>
+            </div>
+            <h3 class="product-title">Neural Insights</h3>
+            <p class="product-description">
+              Advanced analytics platform powered by AI. Uncover hidden
+              patterns, predict trends, and make data-driven decisions faster.
+            </p>
+            <ul class="product-features-list">
+              <li>Automated insights</li>
+              <li>Predictive models</li>
+              <li>Custom dashboards</li>
+              <li>Data connectors</li>
+            </ul>
+            <div class="product-pricing">
+              <span class="price">$299</span>
+              <span class="price-unit">per month</span>
+            </div>
+            <button class="btn btn-primary">Request Demo</button>
+          </div>
+
+          <div class="product-card">
+            <div class="product-header">
+              <div class="product-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"
+                  />
+                  <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                  <line x1="12" y1="22.08" x2="12" y2="12" />
+                </svg>
+              </div>
+              <span class="product-badge">Developer</span>
+            </div>
+            <h3 class="product-title">Neural SDK</h3>
+            <p class="product-description">
+              Software development kit for building AI-powered applications.
+              Available for Python, JavaScript, Go, and Java.
+            </p>
+            <ul class="product-features-list">
+              <li>Multi-language support</li>
+              <li>Comprehensive docs</li>
+              <li>Code examples</li>
+              <li>Active community</li>
+            </ul>
+            <div class="product-pricing">
+              <span class="price">Free</span>
+              <span class="price-unit">open source</span>
+            </div>
+            <button class="btn btn-primary">View on GitHub</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="pricing-comparison">
+        <div class="section-header">
+          <h2 class="section-title">Compare Plans</h2>
+          <p class="section-subtitle">Choose the right plan for your needs</p>
+        </div>
+        <div class="pricing-table">
+          <div class="pricing-column">
+            <h3 class="plan-name">Starter</h3>
+            <div class="plan-price">
+              <span class="price-large">$0</span>
+              <span class="price-period">/month</span>
+            </div>
+            <ul class="plan-features">
+              <li>1,000 API calls/month</li>
+              <li>5 GB storage</li>
+              <li>Community support</li>
+              <li>Basic analytics</li>
+            </ul>
+            <button class="btn btn-secondary">Get Started</button>
+          </div>
+          <div class="pricing-column featured-plan">
+            <div class="popular-badge">Most Popular</div>
+            <h3 class="plan-name">Professional</h3>
+            <div class="plan-price">
+              <span class="price-large">$99</span>
+              <span class="price-period">/month</span>
+            </div>
+            <ul class="plan-features">
+              <li>100,000 API calls/month</li>
+              <li>100 GB storage</li>
+              <li>Priority support</li>
+              <li>Advanced analytics</li>
+              <li>Custom models</li>
+            </ul>
+            <button class="btn btn-primary">Start Trial</button>
+          </div>
+          <div class="pricing-column">
+            <h3 class="plan-name">Enterprise</h3>
+            <div class="plan-price">
+              <span class="price-large">Custom</span>
+            </div>
+            <ul class="plan-features">
+              <li>Unlimited API calls</li>
+              <li>Unlimited storage</li>
+              <li>24/7 dedicated support</li>
+              <li>Custom deployment</li>
+              <li>SLA guarantee</li>
+              <li>On-premise option</li>
+            </ul>
+            <button class="btn btn-secondary">Contact Sales</button>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div class="footer-grid">
+          <div class="footer-column">
+            <div class="footer-logo">
+              <div class="logo-icon">
+                <div class="neural-net">
+                  <div class="node"></div>
+                  <div class="node"></div>
+                  <div class="node"></div>
+                  <div class="connection"></div>
+                  <div class="connection"></div>
+                  <div class="connection"></div>
+                </div>
+              </div>
+              <span class="logo-text">NEURAL FLUX CORP</span>
+            </div>
+            <p class="footer-description">
+              Pioneering the future of artificial intelligence with cutting-edge
+              neural network technology.
+            </p>
+          </div>
+          <div class="footer-column">
+            <h4 class="footer-heading">Solutions</h4>
+            <ul class="footer-links">
+              <li><a href="#enterprise">Enterprise AI</a></li>
+              <li><a href="#automation">Automation</a></li>
+              <li><a href="#analytics">Analytics</a></li>
+              <li><a href="#consulting">Consulting</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4 class="footer-heading">Resources</h4>
+            <ul class="footer-links">
+              <li><a href="#docs">Documentation</a></li>
+              <li><a href="#api">API Reference</a></li>
+              <li><a href="#blog">Blog</a></li>
+              <li><a href="#support">Support</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4 class="footer-heading">Company</h4>
+            <ul class="footer-links">
+              <li><a href="about.html">About Us</a></li>
+              <li><a href="#careers">Careers</a></li>
+              <li><a href="#press">Press</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+                </div>
+        <div class="footer-bottom">
+          <span>&copy; 2025 Neural Flux Corp. All rights reserved.</span>
+          <div class="footer-bottom-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#terms">Terms of Service</a>
+            <a href="#cookies">Cookie Policy</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
