@@ -18,8 +18,7 @@ COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
 # ===== Python dependencies =====
-
-RUN pip install --no-cache-dir pycryptodome gmpy2
+RUN pip install --no-cache-dir pycryptodome
 
 # ===== Create unprivileged user =====
 RUN useradd -m ctf
