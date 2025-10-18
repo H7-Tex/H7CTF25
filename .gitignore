@@ -309,7 +309,6 @@ $RECYCLE.BIN/
 *.tar.bz2
 *.tar.xz
 *.tgz
-*.zip
 *.7z
 *.rar
 *.iso
